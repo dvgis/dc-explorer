@@ -10,7 +10,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('./themes/index.scss');
+@import './themes/index.scss';
 #app {
   width: 100%;
   height: 100%;

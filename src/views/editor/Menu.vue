@@ -4,7 +4,7 @@
       <ul>
         <li
           v-for="(item, index) in menuList"
-          :key="'menu-' + index"
+          :key="'effect-' + index"
           :class="{ active: currentMenu?.key === item.key }"
         >
           <svg-icon
@@ -27,18 +27,24 @@
         class="panel-wrapper"
         v-if="currentMenu?.key === 'setting'"
       ></setting-panel>
+      <effect-list
+        class="panel-wrapper"
+        v-if="currentMenu?.key === 'effect'"
+        :list-data="listData"
+      ></effect-list>
     </div>
   </div>
 </template>
 
 <script>
-import { menuData, mapData } from '@/config'
-import MapList from './MapList'
-import SettingPanel from './SettingPanel'
+import { menuData, mapData, effectTypeData } from '@/config'
+import MapList from './comps/base-layer/MapList'
+import SettingPanel from './comps/SettingPanel'
+import EffectList from './comps/effect/EffectList'
 
 export default {
   name: 'Menu',
-  components: { SettingPanel, MapList },
+  components: { SettingPanel, MapList, EffectList },
   data() {
     return {
       menuList: menuData,
@@ -62,6 +68,7 @@ export default {
   },
   methods: {
     showPanel(menu) {
+      this.$store.dispatch('SET_SELECTED_KEY', 'layer')
       if (this.currentMenu && this.currentMenu.key === menu.key) {
         this.currentMenu = null
         this.listData = []
@@ -70,6 +77,8 @@ export default {
           this.listData = mapData
         } else if (menu.key === 'terrain') {
           this.listData = mapData
+        } else if (menu.key === 'effect') {
+          this.listData = effectTypeData
         }
         this.menuPanelTitle = menu.label
         this.currentMenu = menu
@@ -109,10 +118,10 @@ export default {
         &:nth-of-type(1) {
           margin-top: 30px;
         }
-        &:nth-of-type(3) {
+        &:nth-of-type(1) {
           border-bottom: 1px solid #363742;
         }
-        &:nth-of-type(8) {
+        &:nth-of-type(6) {
           border-top: 1px solid #363742;
         }
         &.active {

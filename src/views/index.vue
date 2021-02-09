@@ -1,26 +1,39 @@
 <template>
   <div class="index">
-    <viewer @on-viewer-created="viewerCreatedHandler"></viewer>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Viewer from '@/components/Viewer'
-import ViewerApi from '@/api/ViewerApi'
+import UserApi from '@/api/UserApi'
 export default {
   name: 'Index',
-  components: {
-    Viewer,
-  },
   data() {
     return {}
   },
   methods: {
-    viewerCreatedHandler(viewer) {
-      let viewerApi = new ViewerApi(viewer)
-      viewerApi.loadBaseLayer()
-      global.viewerApi = viewerApi
+    async getUserInfo() {
+      try {
+        let userInfo = UserApi.getUserInfo()
+        if (userInfo) {
+          this.$store.dispatch('SET_TOKEN', userInfo.token)
+          this.$store.dispatch('SET_PRO_COUNT', userInfo.proCount || 2)
+          this.$store.dispatch('SET_PRO_LIST', userInfo.proList || [])
+        } else {
+          let token = UserApi.initUserInfo()
+          this.$store.dispatch('SET_TOKEN', token)
+          this.$store.dispatch('SET_PRO_COUNT', 2)
+          this.$store.dispatch('SET_PRO_LIST', [])
+        }
+      } catch (e) {
+        this.$message.error('获取用户信息失败')
+      }
     },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.getUserInfo()
+    })
   },
 }
 </script>
@@ -30,5 +43,6 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #131313;
 }
 </style>

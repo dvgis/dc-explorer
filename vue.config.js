@@ -5,6 +5,7 @@
 
 'use strict'
 const path = require('path')
+const fs = require('fs-extra')
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const dvgisDist = './node_modules/@dvgis'
@@ -14,7 +15,7 @@ let resolve = (dir) => {
 }
 
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/dc-vue-next' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/dc-lab' : '/',
   productionSourceMap: false,
   configureWebpack: {
     module: {
@@ -74,7 +75,7 @@ module.exports = {
             from: path.join(__dirname, 'public'),
             to: path.join(__dirname, 'dist'),
             globOptions: {
-              ignore: ['index.html'],
+              ignore: ['index.vue'],
             },
           },
           {
@@ -84,5 +85,43 @@ module.exports = {
         ],
       },
     ])
+  },
+  pluginOptions: {
+    electronBuilder: {
+      nodeIntegration: true,
+      chainWebpackMainProcess: (config) => {
+        let outputDir = 'dist_electron/bundled'
+        fs.removeSync(path.join(__dirname, outputDir, 'Assets'))
+        fs.removeSync(path.join(__dirname, outputDir, 'Workers'))
+        fs.removeSync(path.join(__dirname, outputDir, 'ThirdParty'))
+        config.plugin('copy').use(CopyWebpackPlugin, [
+          {
+            patterns: [
+              {
+                from: path.join(__dirname, 'public'),
+                to: path.join(__dirname, 'dist'),
+                globOptions: {
+                  ignore: ['index.vue'],
+                },
+              },
+              {
+                from: path.join(dvgisDist, 'dc-sdk/dist/resources'),
+                to: path.join(__dirname, 'dist', 'libs/dc-sdk/resources'),
+              },
+            ],
+          },
+        ])
+      },
+      chainWebpackRendererProcess: (config) => {
+        config.plugin('define').tap((args) => {
+          const env = args[0]['process.env']
+          for (let key in env) {
+            args[0][`process.env.${key}`] = env[key]
+          }
+          delete args[0]['process.env']
+          return args
+        })
+      },
+    },
   },
 }

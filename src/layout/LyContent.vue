@@ -12,9 +12,7 @@ export default {
 
 <style lang="scss" scoped>
 .ly-content {
-  position: absolute;
-  top: 50px;
   width: 100%;
-  min-height: 800px;
+  height: calc(100% - 50px);
 }
 </style>

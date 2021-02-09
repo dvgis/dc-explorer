@@ -1,7 +1,9 @@
 <template>
   <div class="tool-panel">
     <div class="panel-title">{{ panelTitle }}</div>
-    <slot></slot>
+    <div class="panel-wrapper">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -41,6 +43,11 @@ export default {
     height: 36px;
     line-height: 36px;
     background: #2c2e3f;
+  }
+
+  .panel-wrapper {
+    height: calc(100% - 36px);
+    overflow: hidden;
   }
 }
 </style>

@@ -5,10 +5,12 @@
 
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
+import { ElColorPicker } from 'element-plus'
 
 class UiLoader {
   install(app) {
     app.use(Antd)
+    app.component(ElColorPicker.name, ElColorPicker)
   }
 }
 

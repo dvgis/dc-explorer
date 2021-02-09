@@ -4,16 +4,18 @@
  */
 
 import httpLoader from './HttpLoader'
-import uiLoader from './UiLoader'
 import compLoader from './CompLoader'
+import uiLoader from './UiLoader'
 import svgIconLoader from './SvgIconLoader'
+import dcLoader from './DcLoader'
 
 class AppLoader {
   install(app) {
     app.use(httpLoader)
-    app.use(uiLoader)
     app.use(compLoader)
+    app.use(uiLoader)
     app.use(svgIconLoader)
+    app.use(dcLoader)
   }
 }
 
