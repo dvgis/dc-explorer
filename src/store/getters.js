@@ -6,6 +6,7 @@
 const getters = {
   proCount: (state) => state.User.proCount,
   proList: (state) => state.User.proList,
+  selectedIndex: (state) => state.User.selectedIndex,
   currentMenu: (state) => state.Menu.currentMenu,
   currentToolPanel: (state) => state.Menu.currentToolPanel,
   currentBaseLayer: (state) => state.BaseLayer.currentBaseLayer,

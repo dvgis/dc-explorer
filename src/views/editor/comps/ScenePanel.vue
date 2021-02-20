@@ -133,6 +133,7 @@ export default {
         global.viewerApi.addBaselayer(baseLayer).setBaseLayer(baseLayer)
         this.$store.dispatch('SET_CURRENT_BASE_LAYER', baseLayer)
       }
+      this.$store.dispatch('SET_BASE_LAYERS', this.baseLayers)
     },
     editBaseLayer(baseLayer) {
       this.$store.dispatch('SET_SELECTED_BASE_LAYER', baseLayer)
@@ -144,7 +145,9 @@ export default {
     delBaseLayer(index) {
       global.viewerApi.removeBaseLayer()
       this.baseLayers.splice(index, 1)
+      this.$store.dispatch('SET_BASE_LAYERS', this.baseLayers)
       if (this.baseLayers.length === 0) {
+        this.$store.dispatch('SET_CURRENT_BASE_LAYER', undefined)
         return
       }
       let baseLayer = this.baseLayers[0]
@@ -170,6 +173,7 @@ export default {
       if (layer) {
         global.viewerApi.removeLayer(layer.id)
         this.layers.splice(index, 1)
+        this.$store.dispatch('SET_LAYERS', this.layers)
       }
     },
     changeLayerVisible(layer) {

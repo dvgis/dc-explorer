@@ -173,6 +173,7 @@ export default {
         id: DC.Util.uuid(),
       })
       if (baseLayers.length === 1) {
+        baseLayers[0].selected = true
         this.$store.dispatch('SET_CURRENT_BASE_LAYER', baseLayers[0])
       } else {
         global.viewerApi

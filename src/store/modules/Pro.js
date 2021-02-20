@@ -92,6 +92,9 @@ const Pro = {
     SET_SELECTED_KEY: ({ commit }, key) => {
       commit('setSelectedKey', key)
     },
+    SET_PRO_NAME: ({ commit }, name) => {
+      commit('setProName', name)
+    },
     SET_SCENE_SETTING: ({ commit }, setting) => {
       commit('setSceneSetting', setting)
     },

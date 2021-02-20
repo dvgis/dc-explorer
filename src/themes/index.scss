@@ -512,9 +512,9 @@ $border_img : linear-gradient(143deg, #335ae9, #6f6ff5);
   }
 }
 
-.dashboard .btns{
-  padding-top:40px;
-  padding-left:25px;
+
+
+.dashboard .btns , .editor .title .tool{
   .ant-btn{
     background: $btn_bg_color;
     color: $font-color;
@@ -533,6 +533,13 @@ $border_img : linear-gradient(143deg, #335ae9, #6f6ff5);
       border: 1px solid rgb(96, 100, 255) !important;
     }
   }
+
+}
+
+
+.dashboard .btns{
+  padding-top:40px;
+  padding-left:25px;
   .btn_create{
     width: 250px;
     height: 40px;
@@ -549,5 +556,13 @@ $border_img : linear-gradient(143deg, #335ae9, #6f6ff5);
       background: $btn_bg_color;
       width: 100px;
     }
+  }
+}
+
+
+
+.editor .title .tool{
+  .ant-btn{
+    margin-right: 20px;
   }
 }

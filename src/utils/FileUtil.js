@@ -5,12 +5,15 @@
 
 const fs = require('fs')
 const fse = require('fs-extra')
-
 const HOME_PATH = process.env.HOME || process.env.USERPROFILE
 
 const BASE_PATH = `${HOME_PATH}/.dc-lab`
 
 class FileUtil {
+  /**
+   *
+   * @param name
+   */
   static createFold(name) {
     try {
       if (!name) {
@@ -25,33 +28,74 @@ class FileUtil {
     } catch (e) {}
   }
 
-  static createFile(fileName) {
+  /**
+   *
+   * @param fileName
+   * @param filePath
+   */
+  static createFile(fileName, filePath) {
     try {
-      let file = `${BASE_PATH}/${fileName}`
+      let file = filePath
+        ? `${filePath}/${fileName}`
+        : `${BASE_PATH}/${fileName}`
       fse.ensureFileSync(file)
     } catch (e) {}
   }
 
-  static readFile(fileName) {
+  /**
+   *
+   * @param fileName
+   * @param filePath
+   * @returns {any}
+   */
+  static readFile(fileName, filePath) {
     let content = undefined
     try {
-      let file = `${BASE_PATH}/${fileName}`
+      let file = filePath
+        ? `${filePath}/${fileName}`
+        : `${BASE_PATH}/${fileName}`
       let butter = fs.readFileSync(file)
       content = butter.toString('utf-8')
     } catch (e) {}
     return content
   }
 
-  static writeFile(fileName, content) {
+  /**
+   *
+   * @param fileName
+   * @param content
+   * @param filePath
+   */
+  static writeFile(fileName, content, filePath) {
     try {
-      let file = `${BASE_PATH}/${fileName}`
+      let file = filePath
+        ? `${filePath}/${fileName}`
+        : `${BASE_PATH}/${fileName}`
       fs.writeFile(file, content, (err) => {})
     } catch (e) {}
   }
 
-  static removeFile(fileName) {
+  /**
+   *
+   * @param filePath
+   * @param content
+   */
+  static writeFileByPath(filePath, content) {
     try {
-      let file = `${BASE_PATH}/${fileName}`
+      fs.writeFile(filePath, content, (err) => {})
+    } catch (e) {}
+  }
+
+  /**
+   *
+   * @param fileName
+   * @param filePath
+   */
+  static removeFile(fileName, filePath) {
+    try {
+      let file = filePath
+        ? `${filePath}/${fileName}`
+        : `${BASE_PATH}/${fileName}`
       fse.removeSync(file)
     } catch (e) {}
   }

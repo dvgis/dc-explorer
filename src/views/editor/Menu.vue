@@ -94,6 +94,11 @@ export default {
       )
     },
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.currentMenu = this.menuList[0]
+    })
+  },
 }
 </script>
 

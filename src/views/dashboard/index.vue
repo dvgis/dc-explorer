@@ -6,8 +6,12 @@
         <div class="btns">
           <a-button class="btn_create" @click="openProModal">创建场景</a-button>
           <span>
-            <a-button>本地</a-button>
-            <a-button>在线</a-button>
+            <a-button
+              ><svg-icon icon-class="local" class-name="icon" />本地</a-button
+            >
+            <a-button>
+              <svg-icon icon-class="online" class-name="icon" />在线</a-button
+            >
           </span>
         </div>
       </div>
@@ -16,8 +20,8 @@
           <div class="card-list">
             <a-card
               class="card"
-              v-for="(proItem, proindex) in proList"
-              :key="'location-' + proindex"
+              v-for="(proItem, proIndex) in proList"
+              :key="'location-' + proIndex"
             >
               <div class="img-wrapper">
                 <img :src="getPreviewImg(proItem)" />
@@ -29,13 +33,13 @@
                   icon-class="pro_preview"
                   class-name="icon"
                   title="查看场景"
-                  @on-click="preview(proItem)"
+                  @on-click="preview(proItem.fileName)"
                 ></svg-icon>
                 <svg-icon
                   icon-class="edit"
                   class-name="icon"
                   title="编辑场景"
-                  @on-click="edit(proItem)"
+                  @on-click="edit(proIndex, proItem.fileName)"
                 ></svg-icon>
                 <svg-icon
                   icon-class="download"
@@ -49,7 +53,7 @@
                 <template v-slot:content>
                   <a @click="edit(proItem)">封面</a>
                   <a @click="share(proItem)">复制</a>
-                  <a @click="del(proindex, proItem)" class="tool-del">删除</a>
+                  <a @click="del(proIndex, proItem)" class="tool-del">删除</a>
                 </template>
               </a-popover>
             </a-card>
@@ -67,7 +71,7 @@
       okText="确定"
     >
       <template #title>
-        <svg-icon icon-class="view" class-name="icon" />添加场景
+        <svg-icon icon-class="scene" class-name="icon" />添加场景
       </template>
       <a-input v-model:value="proName" placeholder="请输入名称"></a-input>
     </a-modal>
@@ -79,6 +83,7 @@ import LyFooter from '@/layout/LyFooter'
 import UserApi from '@/api/UserApi'
 import ProApi from '@/api/ProApi'
 import SvgIcon from '@/components/SvgIcon'
+import { remote } from 'electron'
 export default {
   name: 'DashBoard',
   components: { SvgIcon, LyFooter },
@@ -136,11 +141,12 @@ export default {
       this.proName = ''
       this.proModalVisible = false
     },
-    preview(pro) {
-      this.$router.push(`/preview/${pro.fileName}`)
+    preview(fileName) {
+      this.$router.push(`/preview/${fileName}`)
     },
-    edit(pro) {
-      this.$router.push(`/editor/${pro.fileName}`)
+    edit(index, fileName) {
+      this.$store.dispatch('SET_SELECTED_INDEX', index)
+      this.$router.push(`/editor/${fileName}`)
     },
     share(pro) {},
     del(index, pro) {
@@ -152,7 +158,16 @@ export default {
       })
       ProApi.removePro(pro)
     },
-    download(pro) {},
+    download(pro) {
+      let name = pro.name + '.dc'
+      remote.dialog
+        .showSaveDialog({
+          defaultPath: name,
+        })
+        .then((result) => {
+          ProApi.downloadFile(result.filePath, pro.fileName)
+        })
+    },
   },
 }
 </script>

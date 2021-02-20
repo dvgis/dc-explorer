@@ -8,7 +8,7 @@ const User = {
     token: '',
     proCount: 0,
     proList: [],
-    selectedPro: {},
+    selectedIndex: -1,
   }),
   mutations: {
     setToken(state, token) {
@@ -20,8 +20,8 @@ const User = {
     setProCount(state, count) {
       state.proCount = count
     },
-    setSelectedPro(state, pro) {
-      state.selectedPro = pro
+    setSelectedIndex(state, index) {
+      state.selectedIndex = index
     },
   },
   actions: {
@@ -34,8 +34,8 @@ const User = {
     SET_PRO_COUNT: ({ commit }, count) => {
       commit('setProCount', count)
     },
-    SET_SELECTED_PRO: ({ commit }, pro) => {
-      commit('setSelectedPro', pro)
+    SET_SELECTED_INDEX: ({ commit }, index) => {
+      commit('setSelectedIndex', index)
     },
   },
 }
